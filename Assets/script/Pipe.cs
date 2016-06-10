@@ -4,7 +4,8 @@ using System.Collections;
 public class Pipe : MonoBehaviour {
 
 	private GameObject up, down, left, right; 
-
+	public Material successefullMaterial;
+	public Material original;
 	// Use this for initialization
 	void Start () {
 	
@@ -16,24 +17,21 @@ public class Pipe : MonoBehaviour {
 	}
 	void OnTriggerEnter(Collider other) {
 		if (other.tag == "pipe") {
-			Vector3 myDirection = this.gameObject.transform.forward;
-			Vector3 otherDirection = other.gameObject.transform.forward;
-
-			float angle = Vector3.Angle(otherDirection, myDirection);
-
-			if (angle < 90) {
-				Debug.Log ("up");	
-			} else if (angle >= 90) {
-				Debug.Log ("right");	
-			} else if (angle > 180) {
-				Debug.Log ("left");	
-			} else if (angle > 270) {
-				Debug.Log ("down");	
-			}
+			GameObject parent = transform.parent.parent.gameObject;
+			parent.GetComponent<Renderer>().material = successefullMaterial;
 
 			Debug.Log ("Collision");
 		}
 
-		//Destroy(other.gameObject);
+	}
+
+	void OnTriggerExit(Collider other) {
+		if (other.tag == "pipe") {
+			GameObject parent = transform.parent.parent.gameObject;
+			parent.GetComponent<Renderer>().material = original;
+
+			Debug.Log ("Collision");
+		}
+
 	}
 }
