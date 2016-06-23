@@ -54,7 +54,10 @@ public class Pipe : MonoBehaviour {
 		changeMaterial (currentMaterial);
 	}
 
-	private void changeMaterial(Material material){
+	public void changeMaterial(Material material){
+		if (transform.GetComponent<Renderer> () != null)
+			transform.GetComponent<Renderer> ().material = material;
+		
 		foreach (Transform child in transform) {
 			if (child.GetComponent<Renderer>()!=null)
 				child.GetComponent<Renderer> ().material = material;
@@ -66,8 +69,13 @@ public class Pipe : MonoBehaviour {
 		Debug.Log ("Filling: " + filling);
 	}
 
-	public void setNextPipe(GameObject pipe){
-		this.nextPipe = pipe;
+	public void addNextPipe(GameObject pipe){
+		Debug.Log ("Length: " + pipe.GetComponents<CollisionDetection> ().Length);
+		 
+		GameObject go = (GameObject) Instantiate (pipe, pipe.transform.position, pipe.transform.rotation);
+		changeMaterial (void_pipe);
+		//TODO posicionarlo bien para que quede lindo
+		this.nextPipe = go;
 	}
 
 	public GameObject GetNextPipe() {
@@ -84,5 +92,14 @@ public class Pipe : MonoBehaviour {
 
 	private void gushWater(){
 		Debug.Log ("Chorooooo!!");
+	}
+
+	public bool hasNextPipe() {
+		return nextPipe != null;
+	}
+
+	public void fixChild() {
+		if (hasNextPipe ())
+			nextPipe.GetComponent<Pipe> ().isFixed = true;
 	}
 }
