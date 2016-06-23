@@ -14,6 +14,7 @@ public class Pipe : MonoBehaviour {
 	private bool filled = false;
 	public bool isFixed;
 	public bool isApertura = false;
+	public bool isClose = false;
 
 	private GameObject nextPipe;
 
@@ -85,6 +86,8 @@ public class Pipe : MonoBehaviour {
 	public void fillNext() {
 		if (nextPipe != null) {
 			nextPipe.GetComponent<Pipe> ().fill ();
+		} else if (isClose) {
+			Debug.Log ("You WIN!!");
 		} else {
 			gushWater ();
 		}

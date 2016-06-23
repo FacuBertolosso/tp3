@@ -32,9 +32,10 @@ public class CollisionDetection : MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider other) {
-		Debug.Log ("distance" + (other.transform.parent.position - transform.parent.position).magnitude);
+		
 		if ((other.transform.parent.position - transform.parent.position).magnitude < 0.3)
 			return;
+		Debug.Log ("distance: " + (other.transform.parent.position - transform.parent.position).magnitude);
 		if (pipe.hasNextPipe()) 
 			return;
 		
