@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class Pipe : MonoBehaviour {
 
@@ -17,6 +19,7 @@ public class Pipe : MonoBehaviour {
 	public bool isClose = false;
 
 	private GameObject nextPipe;
+	public Text time;
 
 	// Use this for initialization
 	void Start () {
@@ -34,6 +37,7 @@ public class Pipe : MonoBehaviour {
 				lastTime = currentTime;
 				swapMaterial ();
 			}
+			time.text = ((int) lastTime).ToString();
 		}
 		if (!filled && (currentTime > fillingTime)) {
 			filled = true;
@@ -88,13 +92,17 @@ public class Pipe : MonoBehaviour {
 			nextPipe.GetComponent<Pipe> ().fill ();
 		} else if (isClose) {
 			Debug.Log ("You WIN!!");
+			SceneManager.LoadScene ("win_Game");
+
 		} else {
 			gushWater ();
 		}
 	}
 
 	private void gushWater(){
+		
 		Debug.Log ("Chorooooo!!");
+		SceneManager.LoadScene ("lose_game");
 	}
 
 	public bool hasNextPipe() {
