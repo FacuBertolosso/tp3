@@ -1,116 +1,202 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class Pipe : MonoBehaviour {
+public class Pipe : MonoBehaviour
+{
+    public Material VoidPipe;
+    public Material WateredPipe;
+    private Material _currentMaterial;
+    public float FillingTime = 5;
+    public float Frequency = 0.5f;
 
-	public Material void_pipe;
-	public Material watered_pipe;
-	private Material currentMaterial;
-	public float fillingTime=5;
-	public float frequency = 0.5f;
+    private float _currentTime, _lastTime;
+    private bool _filling;
+    private bool _filled;
+    public bool IsFixed;
+    public bool IsApertura;
+    public bool IsClose;
 
-	private float currentTime,lastTime;
-	private bool filling = false;
-	private bool filled = false;
-	public bool isFixed;
-	public bool isApertura = false;
-	public bool isClose = false;
+    private GameObject _nextPipe;
+    public Text TimeText;
 
-	private GameObject nextPipe;
-	public Text time;
+    // Use this for initialization
+    public void Start()
+    {
+        _currentTime = 0;
+        _lastTime = Frequency + 1;
+        _currentMaterial = VoidPipe;
+        if (IsApertura) IsFixed = true;
+    }
 
-	// Use this for initialization
-	void Start () {
-		currentTime = 0;
-		lastTime = frequency+1;
-		currentMaterial = void_pipe;
-		if (isApertura) isFixed = true;
-	}
+    // Update is called once per frame
+    public void Update()
+    {
+        if (_filling)
+        {
+            _currentTime += Time.deltaTime;
+            if ((_currentTime < FillingTime) && ((_currentTime - _lastTime) > Frequency))
+            {
+                _lastTime = _currentTime;
+                SwapMaterial();
+            }
+            if (TimeText != null) TimeText.text = ((int) _lastTime).ToString();
+        }
+        if (!_filled && (_currentTime > FillingTime))
+        {
+            _filled = true;
+            _filling = false;
+            FillNext();
+        }
+        if (_filled && _currentMaterial.Equals(VoidPipe))
+        {
+            SwapMaterial();
+        }
 
-	// Update is called once per frame
-	void Update () {
-		if (filling) {
-			currentTime += Time.deltaTime;
-			if ((currentTime < fillingTime) && ((currentTime - lastTime) > frequency)) {
-				lastTime = currentTime;
-				swapMaterial ();
-			}
-			time.text = ((int) lastTime).ToString();
-		}
-		if (!filled && (currentTime > fillingTime)) {
-			filled = true;
-			filling = false;
-			fillNext ();
-		}
-		if (filled &&(currentMaterial.Equals(void_pipe))){
-			swapMaterial ();
-		}
+    }
 
-	}
+    private void SwapMaterial()
+    {
+        _currentMaterial = _currentMaterial.Equals(VoidPipe) ? WateredPipe : VoidPipe;
+        ChangeMaterial(_currentMaterial);
+    }
 
-	private void swapMaterial(){
-		if (currentMaterial.Equals(void_pipe)) {
-			currentMaterial = watered_pipe;
-		} else {
-			currentMaterial = void_pipe;
-		}
-		changeMaterial (currentMaterial);
-	}
+    public void ChangeMaterial(Material material)
+    {
+        ChangeMaterial(transform, material);
+    }
 
-	public void changeMaterial(Material material){
-		if (transform.GetComponent<Renderer> () != null)
-			transform.GetComponent<Renderer> ().material = material;
-		
-		foreach (Transform child in transform) {
-			if (child.GetComponent<Renderer>()!=null)
-				child.GetComponent<Renderer> ().material = material;
-		}
-	}
+    private void ChangeMaterial(Transform trfrom, Material material)
+    {
+        if (trfrom.GetComponent<Renderer>() != null)
+            trfrom.GetComponent<Renderer>().material = material;
+        foreach (Transform child in trfrom)
+        {
+            if (child.GetComponent<Renderer>() != null)
+                ChangeMaterial(child, material);
+        }
+    }
 
-	public void fill() {
-		filling = true;
-		Debug.Log ("Filling: " + filling);
-	}
+    public void Fill()
+    {
+        _filling = true;
+        Debug.Log("Filling: " + _filling);
+    }
 
-	public void addNextPipe(GameObject pipe){
-		Debug.Log ("Length: " + pipe.GetComponents<CollisionDetection> ().Length);
-		 
-		GameObject go = (GameObject) Instantiate (pipe, pipe.transform.position, pipe.transform.rotation);
-		changeMaterial (void_pipe);
-		//TODO posicionarlo bien para que quede lindo
-		this.nextPipe = go;
-	}
+    public GameObject GetNextPipe()
+    {
+        return _nextPipe;
+    }
 
-	public GameObject GetNextPipe() {
-		return nextPipe;
-	}
+    public void AddNextPipe(GameObject pipe, string colliderName)
+    {
+        GameObject nextPipe = (GameObject) Instantiate(pipe, Vector3.zero, pipe.transform.rotation);
+        ChangeMaterial(VoidPipe);
+        _nextPipe = nextPipe;
+        _nextPipe.transform.parent = transform;
+        Vector3 rotation = _nextPipe.transform.localEulerAngles;
+        float closestAngle = GetClosestAngle(rotation.y);
+        Vector3 childPosition =
+            CalcChildPosition(pipe.tag, pipe.GetComponentInChildren<Renderer>().bounds.size, closestAngle);
 
-	public void fillNext() {
-		if (nextPipe != null) {
-			nextPipe.GetComponent<Pipe> ().fill ();
-		} else if (isClose) {
-			Debug.Log ("You WIN!!");
-			SceneManager.LoadScene ("win_Game");
+        _nextPipe.GetComponent<Pipe>().IsFixed = true;
+        _nextPipe.transform.localPosition = childPosition;
+        _nextPipe.transform.localRotation = Quaternion.Euler(0f, closestAngle, 0f);
+    }
 
-		} else {
-			gushWater ();
-		}
-	}
+    public void FillNext()
+    {
+        if (_nextPipe != null)
+        {
+            _nextPipe.GetComponent<Pipe>().Fill();
+        }
+        else if (IsClose)
+        {
+            Debug.Log("You WIN!!");
+            SceneManager.LoadScene("win_Game");
+        }
+//		else {
+//			GushWater ();
+//		}
+    }
 
-	private void gushWater(){
-		
-		Debug.Log ("Chorooooo!!");
-		SceneManager.LoadScene ("lose_game");
-	}
+    private void GushWater()
+    {
+        Debug.Log("Chorooooo!!");
+        SceneManager.LoadScene("lose_game");
+    }
 
-	public bool hasNextPipe() {
-		return nextPipe != null;
-	}
+    public bool HasNextPipe()
+    {
+        return _nextPipe != null;
+    }
 
-	public void fixChild() {
-		if (hasNextPipe ())
-			nextPipe.GetComponent<Pipe> ().isFixed = true;
-	}
+    public void FixChild()
+    {
+        _nextPipe.GetComponent<Pipe>().IsFixed = true;
+    }
+
+    private Vector3 CalcChildPosition(string pipeTag, Vector3 childSize, float closestAngle)
+    {
+        float childSizeX = childSize.x;
+//        float childSizeZ = childSize.z;
+        Vector3 boundsSize = gameObject.GetComponentInChildren<Renderer>().bounds.size;
+        float parentSizeX = boundsSize.x;
+//        float parentSizeZ = boundsSize.z;
+        float x = childSizeX / 2 + parentSizeX / 2;
+//        float z = childSizeZ/ 2 + parentSizeZ / 2;
+        print("parent: " + boundsSize);
+        print("child: " + childSize);
+        Vector3 childPosition = new Vector3(x, 0, 0);
+//        switch (pipeTag)
+//        {
+//            case "ClosePipe":
+//                break;
+//            case "LinePipe":
+//                childPosition.x += 0.28f;
+//                if (gameObject.CompareTag("LinePipe")) childPosition.x += 0.1f;
+//                else childPosition.y -= 0.1f;
+//                break;
+//            case "ElbowPipe":
+//                float multiplier = 1;
+//                if (Math.Abs(closestAngle - 90) < 2) multiplier = -1;
+//                else if (Math.Abs(closestAngle - 270) < 2) multiplier = 1;
+//
+//                if (gameObject.CompareTag("ElbowPipe"))
+//                {
+//                    childPosition.x = .98f;
+//                    childPosition.z = .62f;
+//                }
+//                else if (gameObject.CompareTag("LinePipe"))
+//                {
+//                    childPosition.x = 1.08f;
+//                    childPosition.z = multiplier * .28f;
+//                }
+//                else if (gameObject.CompareTag("OpenPipe"))
+//                {
+//                    childPosition.z = multiplier * .21f;
+//                    childPosition.x = 1.18f;
+//                    childPosition.y = -0.1f;
+//                }
+//                break;
+//            default:
+//                break;
+//        }
+
+
+        return childPosition;
+    }
+
+    private float GetClosestAngle(float angle)
+    {
+        float current = angle;
+        foreach (float ang in Angles)
+        {
+            if (Mathf.Abs(angle - ang) < Mathf.Abs(current - ang)) current = ang;
+        }
+        return current;
+    }
+
+    public static readonly float[] Angles = { 0f, 90f, 180f, 270f, 360f};
 }

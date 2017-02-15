@@ -12,7 +12,8 @@ public class chengeScene : MonoBehaviour {
 	void Update () {
 	
 	}
-	public void onClick(){
-		SceneManager.LoadScene ("Facute_david");
-		}
+
+	public void onClick() {
+		SceneManager.LoadScene (1);
+	}
 }

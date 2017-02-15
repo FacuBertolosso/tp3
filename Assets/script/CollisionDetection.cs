@@ -1,90 +1,66 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class CollisionDetection : MonoBehaviour {
 
-	public Material successefullMaterial;
-	public Material voidMaterial;
-	private Pipe pipe;
+	public Material SuccessefullMaterial;
+	public Material VoidMaterial;
+	private Pipe _pipe;
 //	public float deleteColliderTime = 1.0f;
-	public float delayClone=3;
-	private bool clonable =false;
-	private float time;
+	public float DelayClone = 3;
+	private bool _clonable;
+	private float _time;
+
 	// Use this for initialization
-	void Start () {
-		Debug.Log (transform.parent);
-		pipe = gameObject.GetComponentInParent<Pipe>();
-		//if (!pipe.isFixed) changeSateCollider (false);
-		time = 0;
+    public void Start () {
+       _pipe = gameObject.GetComponentInParent<Pipe>();
+//        _pipe = pipe != null ? pipe : gameObject.GetComponent<Pipe>();
+		_time = 0;
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		if (time < delayClone)
-			time += Time.deltaTime;
-		else if (!clonable)
-			clonable = true;
+    public void Update () {
+		if (_time < DelayClone)
+			_time += Time.deltaTime;
+		else if (!_clonable)
+			_clonable = true;
 //		if (time < deleteColliderTime) {
-//			time += Time.deltaTime;
+//			time += TimeText.deltaTime;
 //		} else if (!GetComponent<BoxCollider> ().enabled && !pipe.isFixed	) {
 //			changeSateCollider (true);
 //		}
 	}
 
 	void OnTriggerEnter(Collider other) {
-		
-		if ((other.transform.parent.position - transform.parent.position).magnitude < 0.3)
+		if (_pipe == null || _pipe.HasNextPipe()) return;
+	    if ((other.transform.parent.position - transform.parent.position).magnitude < 0.3)
 			return;
-		Debug.Log ("distance: " + (other.transform.parent.position - transform.parent.position).magnitude);
-		if (pipe.hasNextPipe()) 
-			return;
-		
-		if (clonable && other.tag == "pipe") {
-			changeMaterial (successefullMaterial);
-			if (pipe.isFixed) {
-				Debug.Log ("Enter");
-				GameObject nextPipeGO = other.transform.parent.gameObject;
-				changeSateCollider (false);
-				pipe.addNextPipe (nextPipeGO);
+	    if (_clonable && other.CompareTag("pipe")) {
+			ChangeMaterial (SuccessefullMaterial);
+		    if (_pipe.IsFixed) {
+		        GameObject nextPipeGo = other.transform.parent.gameObject;
+		        enabled = false;
+		        other.GetComponent<CollisionDetection>().enabled = false;
+		        _pipe.AddNextPipe(nextPipeGo, other.gameObject.name);
 			}
-			Debug.Log ("Collision enter");
 		}
-		if (pipe.hasNextPipe ()) {
-			pipe.fixChild ();
-
+		if (_pipe.HasNextPipe ()) {
+			_pipe.FixChild ();
 		}
 	}
 
 	void OnTriggerExit(Collider other) {
-		if (pipe.hasNextPipe()) 
-			return;
-		if (other.tag == "pipe") {
-			pipe.changeMaterial (voidMaterial);
-		}
-		/*
-		if (other.tag == "pipe") {
-			changeMaterial (voidMaterial);
-			Pipe pipe = gameObject.GetComponentInParent<Pipe>();
-			if (pipe.GetNextPipe() != null)
-				pipe.setNextPipe (null);
-			if (pipe.isFixed && !pipe.isApertura)
-				pipe.isFixed = false;
-			Debug.Log ("Collision exit");
-		}
-		*/
-
+		if (_pipe == null || _pipe.HasNextPipe()) return;
+	    if (!other.CompareTag("pipe")) return;
+	    _pipe.ChangeMaterial (VoidMaterial);
+//	    if (_pipe.IsFixed) other.transform.parent = other.transform
 	}
 
-	private void changeMaterial(Material material){
-		
-		//Pipe pipe = gameObject.GetComponentInParent<Pipe> ();
-		pipe.changeMaterial (material);
-		Transform pipeTransform = gameObject.GetComponentInParent<Transform> ();
-		//pipe.addNextPipe (pipeTransform.parent);
+	private void ChangeMaterial(Material material){
+		_pipe.ChangeMaterial (material);
 	}
 
-	public void changeSateCollider(bool state) {
-		GetComponent<BoxCollider> ().enabled = state;
-		GetComponent<Rigidbody> ().isKinematic = state;
-	}
+//	public void ChangeSateCollider(bool state) {
+//		GetComponent<Collider> ().enabled = state;
+//		GetComponent<Rigidbody> ().isKinematic = state;
+//	}
 }
