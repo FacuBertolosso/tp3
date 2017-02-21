@@ -36,7 +36,7 @@ public class CollisionDetection : MonoBehaviour {
 			return;
 	    if (_clonable && other.CompareTag("pipe")) {
 			ChangeMaterial (SuccessefullMaterial);
-		    if (_pipe.IsFixed) {
+		    if (_pipe.isFixed) {
 		        GameObject nextPipeGo = other.transform.parent.gameObject;
 		        enabled = false;
 		        other.GetComponent<CollisionDetection>().enabled = false;

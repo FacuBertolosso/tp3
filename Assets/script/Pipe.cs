@@ -5,18 +5,18 @@ using UnityEngine.UI;
 
 public class Pipe : MonoBehaviour
 {
-    public Material VoidPipe;
-    public Material WateredPipe;
+    public Material voidPipe;
+    public Material wateredPipe;
     private Material _currentMaterial;
-    public float FillingTime = 5;
-    public float Frequency = 0.5f;
+    public float fillingTime = 5;
+    public float frequency = 0.5f;
 
     private float _currentTime, _lastTime;
     private bool _filling;
     private bool _filled;
-    public bool IsFixed;
-    public bool IsApertura;
-    public bool IsClose;
+    public bool isFixed;
+    public bool isApertura;
+    public bool isClose;
 
     private GameObject _nextPipe;
     public Text TimeText;
@@ -25,9 +25,9 @@ public class Pipe : MonoBehaviour
     public void Start()
     {
         _currentTime = 0;
-        _lastTime = Frequency + 1;
-        _currentMaterial = VoidPipe;
-        if (IsApertura) IsFixed = true;
+        _lastTime = frequency + 1;
+        _currentMaterial = voidPipe;
+        if (isApertura) isFixed = true;
     }
 
     // Update is called once per frame
@@ -36,20 +36,20 @@ public class Pipe : MonoBehaviour
         if (_filling)
         {
             _currentTime += Time.deltaTime;
-            if ((_currentTime < FillingTime) && ((_currentTime - _lastTime) > Frequency))
+            if ((_currentTime < fillingTime) && ((_currentTime - _lastTime) > frequency))
             {
                 _lastTime = _currentTime;
                 SwapMaterial();
             }
             if (TimeText != null) TimeText.text = ((int) _lastTime).ToString();
         }
-        if (!_filled && (_currentTime > FillingTime))
+        if (!_filled && (_currentTime > fillingTime))
         {
             _filled = true;
             _filling = false;
             FillNext();
         }
-        if (_filled && _currentMaterial.Equals(VoidPipe))
+        if (_filled && _currentMaterial.Equals(voidPipe))
         {
             SwapMaterial();
         }
@@ -58,7 +58,7 @@ public class Pipe : MonoBehaviour
 
     private void SwapMaterial()
     {
-        _currentMaterial = _currentMaterial.Equals(VoidPipe) ? WateredPipe : VoidPipe;
+        _currentMaterial = _currentMaterial.Equals(voidPipe) ? wateredPipe : voidPipe;
         ChangeMaterial(_currentMaterial);
     }
 
@@ -92,7 +92,7 @@ public class Pipe : MonoBehaviour
     public void AddNextPipe(GameObject pipe, string colliderName)
     {
         GameObject nextPipe = (GameObject) Instantiate(pipe, Vector3.zero, pipe.transform.rotation);
-        ChangeMaterial(VoidPipe);
+        ChangeMaterial(voidPipe);
         _nextPipe = nextPipe;
         _nextPipe.transform.parent = transform;
         Vector3 rotation = _nextPipe.transform.localEulerAngles;
@@ -100,7 +100,7 @@ public class Pipe : MonoBehaviour
         Vector3 childPosition =
             CalcChildPosition(pipe.tag, pipe.GetComponentInChildren<Renderer>().bounds.size, closestAngle);
 
-        _nextPipe.GetComponent<Pipe>().IsFixed = true;
+        _nextPipe.GetComponent<Pipe>().isFixed = true;
         _nextPipe.transform.localPosition = childPosition;
         _nextPipe.transform.localRotation = Quaternion.Euler(0f, closestAngle, 0f);
     }
@@ -111,7 +111,7 @@ public class Pipe : MonoBehaviour
         {
             _nextPipe.GetComponent<Pipe>().Fill();
         }
-        else if (IsClose)
+        else if (isClose)
         {
             Debug.Log("You WIN!!");
             SceneManager.LoadScene("win_Game");
@@ -134,7 +134,7 @@ public class Pipe : MonoBehaviour
 
     public void FixChild()
     {
-        _nextPipe.GetComponent<Pipe>().IsFixed = true;
+        _nextPipe.GetComponent<Pipe>().isFixed = true;
     }
 
     private Vector3 CalcChildPosition(string pipeTag, Vector3 childSize, float closestAngle)
