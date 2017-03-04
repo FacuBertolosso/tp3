@@ -12,8 +12,9 @@ public class Pipe : MonoBehaviour
     public float frequency = 0.5f;
 
     private float _currentTime, _lastTime;
-    private bool _filling;
-    private bool _filled;
+    //private bool _filling;
+    //private bool _filled;
+	private FillingState _fillingState = NoFill.Instance;
     public bool isFixed;
     public bool isApertura;
     public bool isClose;
@@ -33,6 +34,8 @@ public class Pipe : MonoBehaviour
     // Update is called once per frame
     public void Update()
     {
+		_fillingState.update (this);
+		/*
         if (_filling)
         {
             _currentTime += Time.deltaTime;
@@ -52,13 +55,14 @@ public class Pipe : MonoBehaviour
         if (_filled && _currentMaterial.Equals(voidPipe))
         {
             SwapMaterial();
-        }
+        }*/
 
     }
 
-    private void SwapMaterial()
+    public void SwapMaterial()
     {
-        _currentMaterial = _currentMaterial.Equals(voidPipe) ? wateredPipe : voidPipe;
+		//_currentMaterial = _currentMaterial.Equals(voidPipe) ? wateredPipe : voidPipe;
+		_currentMaterial = (_currentMaterial == voidPipe) ? wateredPipe : voidPipe;
         ChangeMaterial(_currentMaterial);
     }
 
@@ -80,8 +84,9 @@ public class Pipe : MonoBehaviour
 
     public void Fill()
     {
-        _filling = true;
-        Debug.Log("Filling: " + _filling);
+		_fillingState = Filling.Instance;
+        //_filling = true;
+        //Debug.Log("Filling: " + _filling);
     }
 
     public GameObject GetNextPipe()
@@ -200,4 +205,28 @@ public class Pipe : MonoBehaviour
     }
 
     public static readonly float[] Angles = { 0f, 90f, 180f, 270f, 360f};
+	public void SetFilligState(FillingState state)
+	{
+		_fillingState = state;
+	}
+	public void IncrementCurentTime()
+	{
+		_currentTime += Time.deltaTime;
+	}
+	public float GetCurrentTime()
+	{
+		return _currentTime;
+	}
+	public float GetLastTime()
+	{
+		return _lastTime;
+	}
+	public void UpdateLastTime()
+	{
+		_lastTime=_currentTime;
+	}
+	public bool HasVoidPipeMaterial()
+	{
+		return _currentMaterial == voidPipe;
+	}
 }
