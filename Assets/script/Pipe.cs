@@ -123,6 +123,7 @@ public class Pipe : MonoBehaviour
 
     private void GushWater()
     {
+		//ativar particle sistem
         Debug.Log("Chorooooo!!");
         SceneManager.LoadScene("lose_game");
     }
