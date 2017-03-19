@@ -4,15 +4,15 @@
 	private Filled ()
 	{
 	}
-	public bool isFilling ()
+	public bool IsFilling ()
 	{
 		return false;
 	}
-	public bool isFilled ()
+	public bool IsFilled ()
 	{
 		return true;
 	}
-	public void update (Pipe pipe)
+	public void Update (Pipe pipe)
 	{
 		if (pipe.HasVoidPipeMaterial())
 			pipe.SwapMaterial();

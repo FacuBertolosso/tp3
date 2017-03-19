@@ -83,7 +83,7 @@ public class VRIntegrationHelper : MonoBehaviour
                 if (TrackableParent != null)
                     TrackableParent.localPosition = Vector3.zero;
 
-                // update Vuforia explicitly
+                // Update Vuforia explicitly
                 VuforiaBehaviour.Instance.UpdateState(false, true);
 
                 if (TrackableParent != null)

@@ -6,15 +6,15 @@ public class NoFill : FillingState
 	private NoFill ()
 	{
 	}
-	public bool isFilling ()
+	public bool IsFilling ()
 	{
 	return false;
 	}
-	public bool isFilled ()
+	public bool IsFilled ()
 	{
 	return false;
 	}
-	public void update (Pipe pipe)
+	public void Update (Pipe pipe)
 	{
 	}
 	public static FillingState Instance

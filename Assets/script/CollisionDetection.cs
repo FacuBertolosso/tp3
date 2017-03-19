@@ -1,20 +1,19 @@
-﻿using UnityEngine;
+﻿﻿using UnityEngine;
 
 public class CollisionDetection : MonoBehaviour {
+    private const string PipeTag = "pipe";
 
-	public Material SuccessefullMaterial;
+    public Material SuccessefullMaterial;
 	public Material VoidMaterial;
 	private Pipe _pipe;
-//	public float deleteColliderTime = 1.0f;
 	public float DelayClone = 3;
 	private bool _clonable;
 	private float _time;
 
 	// Use this for initialization
     public void Start () {
-       _pipe = gameObject.GetComponentInParent<Pipe>();
-//        _pipe = pipe != null ? pipe : gameObject.GetComponent<Pipe>();
-		_time = 0;
+        _pipe = gameObject.GetComponentInParent<Pipe>();
+        _time = 0;
 	}
 	
 	// Update is called once per frame
@@ -23,24 +22,20 @@ public class CollisionDetection : MonoBehaviour {
 			_time += Time.deltaTime;
 		else if (!_clonable)
 			_clonable = true;
-//		if (time < deleteColliderTime) {
-//			time += TimeText.deltaTime;
-//		} else if (!GetComponent<BoxCollider> ().enabled && !pipe.isFixed	) {
-//			changeSateCollider (true);
-//		}
 	}
 
 	void OnTriggerEnter(Collider other) {
 		if (_pipe == null || _pipe.HasNextPipe()) return;
 	    if ((other.transform.parent.position - transform.parent.position).magnitude < 0.3)
 			return;
-	    if (_clonable && other.CompareTag("pipe")) {
+	    if (_clonable && other.CompareTag(PipeTag)) {
 			ChangeMaterial (SuccessefullMaterial);
-		    if (_pipe.isFixed) {
-		        GameObject nextPipeGo = other.transform.parent.gameObject;
+		    if (_pipe.IsFixed) {
+		        GameObject nextPipe = other.transform.parent.gameObject;
 		        enabled = false;
 		        other.GetComponent<CollisionDetection>().enabled = false;
-		        _pipe.AddNextPipe(nextPipeGo, other.gameObject.name);
+		        _pipe.ChangeMaterial(VoidMaterial);
+		        _pipe.AddNextPipe(nextPipe);
 			}
 		}
 		if (_pipe.HasNextPipe ()) {
@@ -50,17 +45,12 @@ public class CollisionDetection : MonoBehaviour {
 
 	void OnTriggerExit(Collider other) {
 		if (_pipe == null || _pipe.HasNextPipe()) return;
-	    if (!other.CompareTag("pipe")) return;
+	    if (!other.CompareTag(PipeTag)) return;
 	    _pipe.ChangeMaterial (VoidMaterial);
-//	    if (_pipe.IsFixed) other.transform.parent = other.transform
 	}
 
 	private void ChangeMaterial(Material material){
 		_pipe.ChangeMaterial (material);
 	}
 
-//	public void ChangeSateCollider(bool state) {
-//		GetComponent<Collider> ().enabled = state;
-//		GetComponent<Rigidbody> ().isKinematic = state;
-//	}
 }
