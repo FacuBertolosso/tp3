@@ -5,30 +5,33 @@ using UnityEngine.UI;
 
 public class Pipe : MonoBehaviour
 {
-    //todo terminar de implementar el State
     public Material VoidPipeMaterial;
     public Material WateredPipeMaterial;
     private Material _currentMaterial;
     public float FillingTime = 5;
     public float Frequency = 0.5f;
-
     private float _currentTime, _lastTime;
 	private FillingState _fillingState;
-    private bool _filling;
-    private bool _filled;
     public bool IsFixed;
     public float TotalAngle;
-
     private GameObject _nextPipe;
-    public Text TimeText;
+    private ScoreManager _scoreManager;
 
-    // Use this for initialization
-    public virtual void Start()
+
+    /// <summary>
+    /// Awake is called when the script instance is being loaded.
+    /// </summary>
+    public void Awake()
     {
         _currentTime = 0;
         _lastTime = Frequency + 1;
         _currentMaterial = VoidPipeMaterial;
         _fillingState = NoFill.Instance;
+    }
+    // Use this for initialization
+    public virtual void Start()
+    {
+        _scoreManager = FindObjectOfType<ScoreManager>();   
     }
 
     public FillingState FillingState
@@ -54,11 +57,11 @@ public class Pipe : MonoBehaviour
         ChangeMaterial(transform, material);
     }
 
-    private void ChangeMaterial(Transform trfrom, Material material)
+    private void ChangeMaterial(Transform transform, Material material)
     {
-        if (trfrom.GetComponent<Renderer>() != null)
-            trfrom.GetComponent<Renderer>().material = material;
-        foreach (Transform child in trfrom)
+        if (transform.GetComponent<Renderer>() != null)
+            transform.GetComponent<Renderer>().material = material;
+        foreach (Transform child in transform)
         {
             if (child.GetComponent<Renderer>() != null)
                 ChangeMaterial(child, material);
@@ -75,11 +78,12 @@ public class Pipe : MonoBehaviour
         return _nextPipe;
     }
 
-    public void AddNextPipe(GameObject pipe)
+    public virtual void AddNextPipe(GameObject pipe)
     {
         _nextPipe = CreateNextPipe(pipe);
         SetNextPipeRotation();
         SetNexPipePosition();
+        _scoreManager.IncrementScore();
     }
 
     private GameObject CreateNextPipe(GameObject pipe)
@@ -98,7 +102,6 @@ public class Pipe : MonoBehaviour
     {
         Vector3 boundsSize = _nextPipe.GetComponentInChildren<Renderer>().bounds.size;
         Vector3 childPosition = CalcChildPosition(boundsSize);
-        print("Child pos: " + childPosition);
         _nextPipe.transform.localPosition = childPosition;
     }
 
@@ -114,10 +117,10 @@ public class Pipe : MonoBehaviour
         {
             _nextPipe.GetComponent<Pipe>().Fill();
         }
-//		else {
-        //Gameover
-//			GushWater ();
-//		}
+		// else {
+        // Gameover
+			// GushWater ();
+		// }
     }
 
     private void GushWater()
@@ -145,7 +148,6 @@ public class Pipe : MonoBehaviour
         float distance = childSizeX / 2 + parentSizeX / 2;
 
         Vector3 oldPostion = _nextPipe.transform.localPosition;
-        print("Old position: " + oldPostion);
         float xAbs = Mathf.Abs(oldPostion.x);
         float yAbs = Mathf.Abs(oldPostion.y);
         float max = Mathf.Max(xAbs, yAbs);
@@ -200,4 +202,14 @@ public class Pipe : MonoBehaviour
 	{
 		return _currentMaterial == VoidPipeMaterial;
 	}
+
+    public void UpdateProgressBar() {
+        float value = _currentTime/FillingTime * 100;
+        GetComponentInChildren<ProgressBar.ProgressRadialBehaviour>().SetFillerSizeAsPercentage(value);
+    }
+
+    public GameObject NextPipe {
+        get {return _nextPipe;}
+        set {_nextPipe = value;}
+    }
 }

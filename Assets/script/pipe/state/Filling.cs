@@ -28,8 +28,8 @@ public class Filling : FillingState
         {
             pipe.UpdateLastTime();
             pipe.SwapMaterial();
+            pipe.UpdateProgressBar();
         }
-        if (pipe.TimeText != null) pipe.TimeText.text = ((int) pipe.GetLastTime()).ToString();
         if (pipe.GetCurrentTime() > pipe.FillingTime)
         {
             pipe.SetFilligState(Filled.Instance);

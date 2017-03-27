@@ -2,6 +2,7 @@
 
 public class CollisionDetection : MonoBehaviour {
     private const string PipeTag = "pipe";
+    private const string ClosePipeTag = "ClosePipeFace";
 
     public Material SuccessefullMaterial;
 	public Material VoidMaterial;
@@ -29,12 +30,11 @@ public class CollisionDetection : MonoBehaviour {
 	    if ((other.transform.parent.position - transform.parent.position).magnitude < 0.3)
 			return;
 	    if (_clonable && other.CompareTag(PipeTag)) {
-			ChangeMaterial (SuccessefullMaterial);
 		    if (_pipe.IsFixed) {
 		        GameObject nextPipe = other.transform.parent.gameObject;
-		        enabled = false;
+		        nextPipe.GetComponent<Pipe>().ChangeMaterial (SuccessefullMaterial);
+				enabled = false;
 		        other.GetComponent<CollisionDetection>().enabled = false;
-		        _pipe.ChangeMaterial(VoidMaterial);
 		        _pipe.AddNextPipe(nextPipe);
 			}
 		}
@@ -44,10 +44,19 @@ public class CollisionDetection : MonoBehaviour {
 	}
 
 	void OnTriggerExit(Collider other) {
-		if (_pipe == null || _pipe.HasNextPipe()) return;
+		if (_pipe == null || _pipe.HasNextPipe() || _pipe.IsFixed) return;
 	    if (!other.CompareTag(PipeTag)) return;
 	    _pipe.ChangeMaterial (VoidMaterial);
 	}
+
+	void OnTriggerStay(Collider other) {
+       if (other.CompareTag(ClosePipeTag) && !_pipe.HasNextPipe()) {
+		    if (!_pipe.IsFixed) return;
+			GameObject nextPipe = other.transform.parent.gameObject;
+			enabled = false;
+			_pipe.NextPipe = nextPipe;
+		} 
+    }
 
 	private void ChangeMaterial(Material material){
 		_pipe.ChangeMaterial (material);

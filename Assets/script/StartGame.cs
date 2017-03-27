@@ -3,26 +3,40 @@
 public class StartGame : MonoBehaviour {
 	public float StartDelayTime = 10f;
 	private float _currentTime;
-	private bool _running;
-
+    public Pipe OpenPipe;
+	private ProgressBar.ProgressRadialBehaviour _progressBar;
+    private bool _startToFill;
+    private bool _running;
 
 	// Use this for initialization
 	public void Start () {
-		
+		 _progressBar = GetComponentInChildren<ProgressBar.ProgressRadialBehaviour>();
+		 _startToFill = false;
+		 _currentTime = 0;
 	}
 	
 	// Update is called once per frame
 	public void Update () {
-		if (_currentTime < StartDelayTime) {
+		if (_startToFill && _currentTime < StartDelayTime) {
 			_currentTime += Time.deltaTime;
-		} else if (!_running) {
-			StartToFill ();
-			_running = true;
+			float value = _currentTime / StartDelayTime * 100;
+			_progressBar.SetFillerSizeAsPercentage(value);
+		} else if (_currentTime >= StartDelayTime && !_running) {
+			_running = !_running;
+			StartToFillOpenPipe ();
 		}
 	}
 
-	private void StartToFill() {
-		Pipe pipe = gameObject.GetComponent<Pipe>(); 
-		pipe.Fill ();
+	private void StartToFillOpenPipe() {
+		OpenPipe.Fill ();
 	}
+
+	public void StartToFill() {
+		_startToFill = true;
+	}
+
+	public void StopToFill() {
+		_startToFill = false;
+	}
+
 }
