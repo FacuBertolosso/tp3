@@ -3,7 +3,13 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - OpenPipe
+  - ClosePipeFace
+  - ClosePipe
+  - LinePipe
+  - ElbowPipe
+  - pipe
   layers:
   - Default
   - TransparentFX

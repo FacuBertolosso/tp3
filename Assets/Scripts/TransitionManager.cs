@@ -23,9 +23,6 @@ public class TransitionManager : MonoBehaviour
 
 
     #region PUBLIC_MEMBER_VARIABLES
-    public GameObject[] VROnlyObjects;
-    public GameObject[] AROnlyObjects;
-
     [Range(0.1f, 5.0f)]
     public float transitionDuration = 1.5f; // seconds
 
@@ -46,8 +43,6 @@ public class TransitionManager : MonoBehaviour
 
         mCurrentMode = GetMixedRealityMode();
         MixedRealityController.Instance.SetMode(mCurrentMode);
-
-        UpdateVisibleObjects();
 
         mCurrentTime = Time.realtimeSinceStartup;
     }
@@ -96,7 +91,6 @@ public class TransitionManager : MonoBehaviour
             }
 
             MixedRealityController.Instance.SetMode(mCurrentMode);
-            UpdateVisibleObjects();
         }
 
         if (mPlaying)
@@ -175,20 +169,6 @@ public class TransitionManager : MonoBehaviour
         {
             return ModeConfig.isFullScreenMode ?
                 MixedRealityController.Mode.HANDHELD_VR : MixedRealityController.Mode.VIEWER_VR;
-        }
-    }
-
-
-    private void UpdateVisibleObjects()
-    {
-        foreach (var go in VROnlyObjects)
-        {
-            go.SetActive(!InAR);
-        }
-
-        foreach (var go in AROnlyObjects)
-        {
-            go.SetActive(InAR);
         }
     }
 
