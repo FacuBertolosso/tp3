@@ -82,7 +82,8 @@ public class Pipe : MonoBehaviour
         _nextPipe = CreateNextPipe(pipe);
         SetNextPipeRotation();
         SetNexPipePosition();
-        _scoreManager.IncrementScore();
+        // TODO uncomment it
+        // _scoreManager.IncrementScore();
     }
 
     private GameObject CreateNextPipe(GameObject pipe)
@@ -116,17 +117,16 @@ public class Pipe : MonoBehaviour
         {
             _nextPipe.GetComponent<Pipe>().Fill();
         }
-		// else {
-        // Gameover
-			// GushWater ();
-		// }
+		else {
+			GameOver ();
+		}
     }
 
-    private void GushWater()
+    private void GameOver()
     {
 		//activar particle system
-        Debug.Log("Chorooooo!!");
-        SceneManager.LoadScene("lose_game");
+        Debug.Log("You loose the game!!");
+        // SceneManager.LoadScene("lose_game");
     }
 
     public bool HasNextPipe()
@@ -161,6 +161,7 @@ public class Pipe : MonoBehaviour
             float pos = distance * Mathf.Sign(oldPostion.z);
             childPosition = new Vector3(0, 0, pos);
         }
+        Debug.Log("Child Position = " + childPosition);
         return childPosition;
     }
 
