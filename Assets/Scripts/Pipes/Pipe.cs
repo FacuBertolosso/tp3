@@ -100,7 +100,7 @@ public class Pipe : MonoBehaviour
 
     private void SetNexPipePosition()
     {
-        Vector3 boundsSize = _nextPipe.GetComponentInChildren<Renderer>().bounds.size;
+        Vector3 boundsSize = _nextPipe.transform.FindChild("default").GetComponentInChildren<Renderer>().bounds.size;
         Vector3 childPosition = CalcChildPosition(boundsSize);
         _nextPipe.transform.localPosition = childPosition;
     }
@@ -142,7 +142,8 @@ public class Pipe : MonoBehaviour
     private Vector3 CalcChildPosition(Vector3 childSize)
     {
         float childSizeX = childSize.x;
-        Vector3 boundsSize = gameObject.GetComponentInChildren<Renderer>().bounds.size;
+        Vector3 boundsSize = gameObject.transform.FindChild("default").GetComponent<Renderer>().bounds.size;
+        // Vector3 boundsSize = gameObject.GetComponentInChildren<Renderer>().bounds.size;
         float parentSizeX = boundsSize.x;
         float distance = childSizeX / 2 + parentSizeX / 2;
 
