@@ -1,10 +1,5 @@
-﻿/*===============================================================================
-Copyright (c) 2015-2016 PTC Inc. All Rights Reserved.
-Copyright (c) 2015 Qualcomm Connected Experiences, Inc. All Rights Reserved.
-Vuforia is a trademark of PTC Inc., registered in the United States and other 
-countries.
-===============================================================================*/
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -12,12 +7,15 @@ public class ViewTrigger : MonoBehaviour
 {
     public enum TriggerType
     {
-        VR_TRIGGER,
-        AR_TRIGGER
+        START_TRIGGER,
+        RESTART_TRIGGER,
+        MENU_TRIGGER,
+        TUTORIAL_TRIGGER,
+        EXIT_TRIGGER
     }
 
     #region PUBLIC_MEMBER_VARIABLES
-    public TriggerType triggerType = TriggerType.VR_TRIGGER;
+    public TriggerType triggerType = TriggerType.MENU_TRIGGER;
     public float activationTime = 1.5f;
     public Material focusedMaterial;
     public Material nonFocusedMaterial;
@@ -28,14 +26,14 @@ public class ViewTrigger : MonoBehaviour
     #region PRIVATE_MEMBER_VARIABLES
     private float mFocusedTime = 0;
     private bool mTriggered = false;
-    private TransitionManager mTransitionManager;
+    // private TransitionManager mTransitionManager;
     #endregion // PRIVATE_MEMBER_VARIABLES
 
 
     #region MONOBEHAVIOUR_METHODS
     void Start()
     {
-        mTransitionManager = FindObjectOfType<TransitionManager>();
+        // mTransitionManager = FindObjectOfType<TransitionManager>();
         mTriggered = false;
         mFocusedTime = 0;
         Focused = false;
@@ -64,10 +62,30 @@ public class ViewTrigger : MonoBehaviour
                 mTriggered = true;
                 mFocusedTime = 0;
                 
+                switch(triggerType) {
+                    case TriggerType.START_TRIGGER:
+                        SceneManager.LoadScene(1);
+                        break;
+                    case TriggerType.RESTART_TRIGGER:
+                        // TODO think how to do it
+                        // SceneManager.LoadScene(2);
+                        break;
+                    case TriggerType.MENU_TRIGGER:
+                        SceneManager.LoadScene(0);
+                        break;
+                    case TriggerType.TUTORIAL_TRIGGER:
+                        SceneManager.LoadScene(2);
+                        break;
+                    case TriggerType.EXIT_TRIGGER:
+                        Debug.Log("Quitting application...");
+                        Application.Quit();
+                        break;
+                }
+                
                 // Activate transition from AR to VR or vice versa
-                bool goingBackToAR = (triggerType == TriggerType.AR_TRIGGER);
-                mTransitionManager.Play(goingBackToAR);
-                StartCoroutine(ResetAfter(0.3f*mTransitionManager.transitionDuration));
+                // bool goingBackToAR = (triggerType == TriggerType.AR_TRIGGER);
+                // mTransitionManager.Play(goingBackToAR);
+                // StartCoroutine(ResetAfter(0.3f*mTransitionManager.transitionDuration));
             }
         }
         else
@@ -120,4 +138,3 @@ public class ViewTrigger : MonoBehaviour
     }
     #endregion // PRIVATE_METHODS
 }
-
