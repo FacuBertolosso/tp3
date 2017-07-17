@@ -19,7 +19,7 @@ public class StartGame : MonoBehaviour {
 	public void Update () {
 		if (_startToFill && _currentTime < StartDelayTime) {
 			_currentTime += Time.deltaTime;
-			float value = _currentTime / StartDelayTime * 100;
+			// float value = _currentTime / StartDelayTime * 100;
 			// _progressBar.SetFillerSizeAsPercentage(value);
 		} else if (_currentTime >= StartDelayTime && !_running) {
 			_running = !_running;

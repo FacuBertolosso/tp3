@@ -14,7 +14,7 @@ public class Pipe : MonoBehaviour
     public bool IsFixed;
     public float TotalAngle;
     private GameObject _nextPipe;
-    private ScoreManager _scoreManager;
+    private ScoreManager _scoreManager = null;
 
 
     /// <summary>
@@ -30,7 +30,7 @@ public class Pipe : MonoBehaviour
     // Use this for initialization
     public virtual void Start()
     {
-        _scoreManager = FindObjectOfType<ScoreManager>();   
+        
     }
 
     public FillingState FillingState
@@ -82,8 +82,7 @@ public class Pipe : MonoBehaviour
         _nextPipe = CreateNextPipe(pipe);
         SetNextPipeRotation();
         SetNexPipePosition();
-        // TODO uncomment it
-        // _scoreManager.IncrementScore();
+        GetScoreManager().IncrementScore();
     }
 
     private GameObject CreateNextPipe(GameObject pipe)
@@ -212,5 +211,13 @@ public class Pipe : MonoBehaviour
     public GameObject NextPipe {
         get {return _nextPipe;}
         set {_nextPipe = value;}
+    }
+
+    private ScoreManager GetScoreManager() {
+        if (!_scoreManager){
+            _scoreManager = FindObjectOfType<ScoreManager>();   
+        }
+        Debug.Log("Score manager: ", _scoreManager);
+        return _scoreManager;
     }
 }
