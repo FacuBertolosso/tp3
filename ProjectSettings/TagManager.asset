@@ -10,6 +10,7 @@ TagManager:
   - LinePipe
   - ElbowPipe
   - pipe
+  - water
   layers:
   - Default
   - TransparentFX
