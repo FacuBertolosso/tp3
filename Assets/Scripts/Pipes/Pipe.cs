@@ -125,6 +125,15 @@ public class Pipe : MonoBehaviour
     {
 		//activar particle system
         Debug.Log("You loose the game!!");
+        foreach(CollisionDetection collisionDetection in GetComponentsInChildren<CollisionDetection>()){
+            if (collisionDetection.isActiveAndEnabled) {
+                var face = collisionDetection.gameObject;
+                Debug.Log("Face: " + face);
+                var water_fountain = face.transform.GetChild(0).gameObject;
+                Debug.Log("water_fountain: " + water_fountain);
+                water_fountain.SetActive(true);
+            }
+        }
         // SceneManager.LoadScene("lose_game");
     }
 
