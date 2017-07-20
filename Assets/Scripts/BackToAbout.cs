@@ -42,9 +42,9 @@ public class BackToAbout : MonoBehaviour
     private void GoToAboutPage()
     {
 #if (UNITY_5_2 || UNITY_5_1 || UNITY_5_0)
-        Application.LoadLevel("Vuforia-1-About");
+        Application.LoadLevel("Piper-Menu");
 #else // UNITY_5_3 or above
-        UnityEngine.SceneManagement.SceneManager.LoadScene("Vuforia-1-About");        
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Piper-Menu");        
 #endif
     }
 
