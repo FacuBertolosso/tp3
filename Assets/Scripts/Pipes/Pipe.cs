@@ -9,7 +9,7 @@ public class Pipe : MonoBehaviour
     public Material VoidPipeMaterial;
     public Material WateredPipeMaterial;
     private Material _currentMaterial;
-    public float FillingTime = 5;
+    public float FillingTime = 7;
     public float Frequency = 0.5f;
     private float _currentTime, _lastTime;
 	private FillingState _fillingState;
