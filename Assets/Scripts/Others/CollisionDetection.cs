@@ -35,6 +35,8 @@ public class CollisionDetection : MonoBehaviour {
 		        nextPipe.GetComponent<Pipe>().ChangeMaterial (SuccessefullMaterial);
 				enabled = false;
 		        other.GetComponent<CollisionDetection>().enabled = false;
+				AudioSource audio = GetComponent<AudioSource>();
+        		audio.Play();
 		        _pipe.AddNextPipe(nextPipe);
 			}
 		}
