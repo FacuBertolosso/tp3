@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -15,6 +17,7 @@ public class Pipe : MonoBehaviour
     public float TotalAngle;
     private GameObject _nextPipe;
     private ScoreManager _scoreManager = null;
+    private static float DELAY_GAME_OVER_SCENE = 5;
 
 
     /// <summary>
@@ -134,7 +137,7 @@ public class Pipe : MonoBehaviour
                 water_fountain.SetActive(true);
             }
         }
-        // SceneManager.LoadScene("lose_game");
+        StartCoroutine(LoadSceneAfterDelay(DELAY_GAME_OVER_SCENE));
     }
 
     public bool HasNextPipe()
@@ -228,5 +231,11 @@ public class Pipe : MonoBehaviour
         }
         Debug.Log("Score manager: ", _scoreManager);
         return _scoreManager;
+    }
+
+    IEnumerator LoadSceneAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        SceneManager.LoadScene("Piper-Game-Over");
     }
 }
