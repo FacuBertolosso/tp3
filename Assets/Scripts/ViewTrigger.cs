@@ -64,17 +64,16 @@ public class ViewTrigger : MonoBehaviour
                 
                 switch(triggerType) {
                     case TriggerType.START_TRIGGER:
-                        SceneManager.LoadScene(2);
+                        SceneManager.LoadScene("Piper-Game");
                         break;
                     case TriggerType.RESTART_TRIGGER:
-                        // TODO think how to do it
-                        // SceneManager.LoadScene(2);
+                        SceneManager.LoadScene("Piper-Game");
                         break;
                     case TriggerType.MENU_TRIGGER:
-                        SceneManager.LoadScene(0);
+                        SceneManager.LoadScene("Piper-Menu");
                         break;
                     case TriggerType.TUTORIAL_TRIGGER:
-                        SceneManager.LoadScene(1);
+                        SceneManager.LoadScene("Piper-Tutorial");
                         break;
                     case TriggerType.EXIT_TRIGGER:
                         Debug.Log("Quitting application...");
