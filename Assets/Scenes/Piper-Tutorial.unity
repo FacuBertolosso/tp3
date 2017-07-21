@@ -292,32 +292,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   errorText: {fileID: 535293543}
---- !u!21 &111900069
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: stones_scaledMaterial
-  m_Shader: {fileID: 10752, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 5
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  m_SavedProperties:
-    serializedVersion: 2
-    m_TexEnvs:
-    - first:
-        name: _MainTex
-      second:
-        m_Texture: {fileID: 2800000, guid: 3ed516cc43e74becb28ee376dbe1c5f4, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Floats: []
-    m_Colors:
-    - first:
-        name: _Color
-      second: {r: 0.82089555, g: 0.82089555, b: 0.82089555, a: 1}
 --- !u!1 &163638913
 GameObject:
   m_ObjectHideFlags: 0
@@ -344,7 +318,7 @@ Transform:
   m_GameObject: {fileID: 163638913}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.09, y: 0.09, z: 0.09}
+  m_LocalScale: {x: 0.15, y: 0.15, z: 0.15}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 702254125}
@@ -1361,7 +1335,8 @@ Prefab:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 114000012254081252, guid: ba66c6f93c586674f858894ed6d6058a, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: ba66c6f93c586674f858894ed6d6058a, type: 2}
   m_IsPrefabParent: 0
 --- !u!4 &729452438 stripped
@@ -1901,7 +1876,8 @@ Prefab:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 114000010620200240, guid: 3e21a9d2d1bf9714e86ca26199ad3882, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 3e21a9d2d1bf9714e86ca26199ad3882, type: 2}
   m_IsPrefabParent: 0
 --- !u!4 &1272421535 stripped
@@ -2245,7 +2221,8 @@ Prefab:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 114000010375044974, guid: 5d465f3d7ab50c743929c265e5573fb2, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 5d465f3d7ab50c743929c265e5573fb2, type: 2}
   m_IsPrefabParent: 0
 --- !u!4 &1457508076 stripped
@@ -2337,7 +2314,7 @@ Prefab:
     - target: {fileID: 3300000, guid: 384a0d8cc71cef74a873b3353337ea2c, type: 2}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 1903113338}
+      objectReference: {fileID: 1862983662}
     - target: {fileID: 11400000, guid: 384a0d8cc71cef74a873b3353337ea2c, type: 2}
       propertyPath: mInitializedInEditor
       value: 1
@@ -2373,7 +2350,7 @@ Prefab:
     - target: {fileID: 2300000, guid: 384a0d8cc71cef74a873b3353337ea2c, type: 2}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 111900069}
+      objectReference: {fileID: 1831032770}
     - target: {fileID: 400000, guid: 384a0d8cc71cef74a873b3353337ea2c, type: 2}
       propertyPath: m_LocalScale.x
       value: 0.247
@@ -2548,7 +2525,33 @@ Prefab:
     - {fileID: 11400004, guid: bf30d577eead1ef40bcf2b404289daf4, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: bf30d577eead1ef40bcf2b404289daf4, type: 2}
   m_IsPrefabParent: 0
---- !u!43 &1903113338
+--- !u!21 &1831032770
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: stones_scaledMaterial
+  m_Shader: {fileID: 10752, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 5
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  m_SavedProperties:
+    serializedVersion: 2
+    m_TexEnvs:
+    - first:
+        name: _MainTex
+      second:
+        m_Texture: {fileID: 2800000, guid: 3ed516cc43e74becb28ee376dbe1c5f4, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats: []
+    m_Colors:
+    - first:
+        name: _Color
+      second: {r: 0.82089555, g: 0.82089555, b: 0.82089555, a: 1}
+--- !u!43 &1862983662
 Mesh:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
@@ -2999,7 +3002,15 @@ Prefab:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 114000011830724290, guid: aad53c2ec02231f4e827753eb40d6916,
+        type: 2}
+      propertyPath: IsFixed
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 114000011830724290, guid: aad53c2ec02231f4e827753eb40d6916, type: 2}
+    - {fileID: 114000011203988352, guid: aad53c2ec02231f4e827753eb40d6916, type: 2}
+    - {fileID: 114000011307744196, guid: aad53c2ec02231f4e827753eb40d6916, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: aad53c2ec02231f4e827753eb40d6916, type: 2}
   m_IsPrefabParent: 0
 --- !u!4 &2097473890 stripped

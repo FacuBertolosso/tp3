@@ -11,9 +11,13 @@ EditorBuildSettings:
     path: Assets/Scenes/Vuforia-1-About.unity
   - enabled: 0
     path: Assets/Scenes/Vuforia-2-Loading.unity
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/Piper-Menu.unity
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/Piper-Tutorial.unity
   - enabled: 1
     path: Assets/Scenes/Piper-Game.unity
+  - enabled: 1
+    path: Assets/Scenes/Piper-Game-Over.unity
+  - enabled: 1
+    path: Assets/Scenes/Piper-Win.unity

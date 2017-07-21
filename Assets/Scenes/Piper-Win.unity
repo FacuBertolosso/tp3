@@ -236,7 +236,7 @@ Transform:
   m_GameObject: {fileID: 163638913}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.09, y: 0.09, z: 0.09}
+  m_LocalScale: {x: 0.15, y: 0.15, z: 0.15}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 486351570}
@@ -919,7 +919,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7372377dc09c64428043ff4fb02b2af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  triggerType: 0
+  triggerType: 2
   activationTime: 1.5
   focusedMaterial: {fileID: 2100000, guid: 22d395481b2b495419e1b3e5c8e15522, type: 2}
   nonFocusedMaterial: {fileID: 2100000, guid: 2e8947404d08e3c40af34591538ccc0d, type: 2}
