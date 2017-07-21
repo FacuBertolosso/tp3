@@ -123,8 +123,8 @@ public class Pipe : MonoBehaviour
 
     private void GameOver()
     {
-		//activar particle system
         Debug.Log("You loose the game!!");
+		//activate particle system
         foreach(CollisionDetection collisionDetection in GetComponentsInChildren<CollisionDetection>()){
             if (collisionDetection.isActiveAndEnabled) {
                 var face = collisionDetection.gameObject;
